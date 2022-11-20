@@ -151,8 +151,10 @@ function quizStart() {
 
 function emptyContainer(container) {}
 
-
-
 function quizOver() {}
 
 function highScorePage() {}
+
+// ---------------------------------- attempt 2 ----------------------------------
+
+
