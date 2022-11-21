@@ -20,7 +20,6 @@ let correctAnswer = "";
 let score = 0;
 let iteration = 0;
 let timer = "";
-let timeInterval = "";
 let endQuizFlag = false;
 let questions = [
   {
@@ -152,23 +151,33 @@ function displayHighScores() {
 
   let tempArr = JSON.parse(localStorage.getItem(keyName));
   if (tempArr.length > 0) {
-    sortArray(tempArr);
-    populateScores(tempArr);
+    // sorting array correctly!
+    // sortArray(tempArr);
+    tempArr.sort();
+    for (let i = 0; i < tempArr.length; i++) {
+      for (let j = 1; j < tempArr.length; j++) {
+        if (tempArr[j - 1][1] < tempArr[j][1]) {
+          let temp = tempArr[j];
+          tempArr[j] = tempArr[j - 1];
+          tempArr[j - 1] = temp;
+        }
+      }
+    }
+
+    // getting array length
+    let arrLength = tempArr.length;
+    if (arrLength > 5) {
+      arrLength = 5;
+    }
+
+    for (let i = 0; i < arrLength; i++) {
+      highScoreElArr[i].textContent = `${tempArr[i][0]} scored: ${tempArr[i][1]}`;
+    }
   }
 }
-function populateScores(arr) {
-  let arrLength = arr.length;
-  if (arrLength > 5) {
-    arrLength = 5;
-  }
-  for (let i = 0; i < arrLength; i++) {
-    highScoreElArr[i].textContent = `${arr[i][0]} scored: ${arr[i][1]}`;
-  }
-}
-// sorts array
 function sortArray(arr) {
   arr.sort();
-  for (let i = 0; i < arr.length + 1; i++) {
+  for (let i = 0; i < arr.length; i++) {
     for (let j = 1; j < arr.length; j++) {
       if (arr[j - 1][1] < arr[j][1]) {
         let temp = arr[j];
@@ -202,16 +211,15 @@ formBtnEl.addEventListener("click", function (event) {
 highScoresHomeBtnEl.addEventListener("click", function () {
   highScoresPageEl.setAttribute("class", "hidden");
   homePageEl.removeAttribute("class", "hidden");
+  //   resetVariables();
   window.location.reload();
 });
 
 highScoresBtnEl.addEventListener("click", function () {
-  if (timeInterval != "") {
-    clearInterval(timeInterval);
-  }
   resetVariables();
-  homePageEl.removeAttribute("class", "hidden");
   homePageEl.setAttribute("class", "hidden");
   highScoresPageEl.removeAttribute("class", "hidden");
   displayHighScores();
 });
+
+// function calls
