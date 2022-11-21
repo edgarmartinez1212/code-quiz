@@ -54,7 +54,6 @@ let questionTitleEl = document.querySelector("#questionTitle");
 let questionResultEl = document.querySelector("#questionResult");
 
 // quizComplete variables
-
 let userScoreEl = document.querySelector("#userScore");
 let formSaveNameEl = document.querySelector("#formSaveName");
 let formInputEl = document.querySelector("#formInput");
@@ -71,6 +70,7 @@ let highScoreElArr = [highScore1El, highScore2El, highScore3El, highScore4El, hi
 let highScoresHomeBtnEl = document.querySelector("#highScoresHomeBtn");
 
 // functions
+// resets variables
 function resetVariables() {
   seconds = 30;
   score = 0;
@@ -84,18 +84,21 @@ function resetVariables() {
   quizCompletePageEL.setAttribute("class", "hidden");
   highScoresPageEl.setAttribute("class", "hidden");
 }
+
+// begins the quiz
 function startQuiz() {
   if (iteration === 0) {
     questionBtnListeners();
     startTimer();
   } else if (iteration >= questions.length) {
     endQuiz();
-    // need to handle this
   }
   if (seconds != 0) {
     populateQuiz();
   }
 }
+
+// start timer
 function startTimer() {
   timeInterval = setInterval(function () {
     seconds--;
@@ -106,9 +109,10 @@ function startTimer() {
     }
   }, 1000);
 }
+
+// adds event listeners to question buttons
 function questionBtnListeners() {
   for (let i = 0; i < questionBtnElArr.length; i++) {
-    // questionBtnElArr[i].setAttribute("class", "font-bold py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-700  w-full");
     questionBtnElArr[i].addEventListener("click", function (event) {
       if (event.target.textContent === correctAnswer) {
         questionResultEl.textContent = `correct: ${correctAnswer}`;
@@ -122,6 +126,9 @@ function questionBtnListeners() {
     });
   }
 }
+
+// populates the quiz menu (question + choices)
+// stores correct answer
 function populateQuiz() {
   questionTitleEl.textContent = questions[iteration].question;
   correctAnswer = questions[iteration].correct;
@@ -129,6 +136,8 @@ function populateQuiz() {
     questionBtnElArr[i].textContent = questions[iteration].choices[i];
   }
 }
+
+// end of quiz
 function endQuiz() {
   if (!endQuizFlag) {
     seconds = 0;
@@ -138,15 +147,19 @@ function endQuiz() {
   quizComplete();
 }
 
+// quiz is over
 function quizComplete() {
   displayQuizComplete();
   userScoreEl.textContent = `Final Score: ${score}`;
 }
+
+// displays the completed quiz page - asks user to enter initials
 function displayQuizComplete() {
   quizStartPageEl.setAttribute("class", "hidden");
   quizCompletePageEL.removeAttribute("class", "hidden");
 }
 
+// displays highscores page
 function displayHighScores() {
   highScoresPageEl.removeAttribute("class", "hidden");
 
@@ -156,6 +169,8 @@ function displayHighScores() {
     populateScores(tempArr);
   }
 }
+
+// populates the top 5 high scores
 function populateScores(arr) {
   let arrLength = arr.length;
   if (arrLength > 5) {
@@ -165,7 +180,8 @@ function populateScores(arr) {
     highScoreElArr[i].textContent = `${arr[i][0]} scored: ${arr[i][1]}`;
   }
 }
-// sorts array
+
+// CORRECTLY sorts array
 function sortArray(arr) {
   arr.sort();
   for (let i = 0; i < arr.length + 1; i++) {
